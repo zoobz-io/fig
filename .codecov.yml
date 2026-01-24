@@ -1,0 +1,32 @@
+coverage:
+  status:
+    project:
+      default:
+        target: 70%
+        threshold: 1%
+    patch:
+      default:
+        target: 80%
+        threshold: 0%
+
+ignore:
+  - "*_test.go"
+  - "testing/**/*"
+  - "docs/**/*"
+  - ".github/**/*"
+
+flags:
+  unit:
+    paths:
+      - "*.go"
+      - "!testing/**"
+    carryforward: true
+  integration:
+    paths:
+      - "testing/integration/**"
+    carryforward: true
+
+comment:
+  layout: "reach,diff,flags,files"
+  behavior: default
+  require_changes: true

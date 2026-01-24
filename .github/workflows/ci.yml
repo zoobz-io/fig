@@ -1,0 +1,104 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        go-version: ['1.24', '1.25']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ matrix.go-version }}
+      - run: make test
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.25'
+      - uses: golangci/golangci-lint-action@v7
+
+  security:
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.25'
+      - name: Run gosec
+        uses: securego/gosec@master
+        with:
+          args: '-fmt sarif -out gosec.sarif ./...'
+      - name: Upload SARIF
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: gosec.sarif
+
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.25'
+      - name: Run tests with coverage
+        run: |
+          # Unit test coverage (all workspace modules)
+          go test -race -tags testing -covermode=atomic -coverprofile=coverage-unit.out ./... ./awssm/... ./gcpsm/... ./vault/...
+
+          # Integration test coverage (separate profile)
+          go test -race -tags testing -covermode=atomic -coverprofile=coverage-integration.out ./testing/integration/... 2>/dev/null || true
+
+          # Merge coverage profiles
+          echo "mode: atomic" > coverage.out
+          tail -n +2 coverage-unit.out >> coverage.out
+          tail -n +2 coverage-integration.out >> coverage.out 2>/dev/null || true
+      - uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: coverage.out
+          flags: unit,integration
+          fail_ci_if_error: true
+
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.25'
+      - run: make test-bench
+
+  validate-modules:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.25'
+      - name: Validate all go.mod files are tidy
+        run: |
+          go mod tidy
+          git diff --exit-code go.mod go.sum || (echo "Root go.mod needs tidying" && exit 1)
+          for dir in awssm gcpsm vault testing/integration; do
+            (cd "$dir" && go mod tidy)
+            git diff --exit-code "$dir/go.mod" "$dir/go.sum" || (echo "$dir/go.mod needs tidying" && exit 1)
+          done
+
+  ci-complete:
+    needs: [test, lint, security, coverage, benchmark, validate-modules]
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "CI complete"

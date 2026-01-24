@@ -1,0 +1,98 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  packages: write
+  id-token: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.25'
+      - name: Validate all go.mod files
+        run: |
+          go mod tidy
+          git diff --exit-code go.mod go.sum || (echo "Root go.mod needs tidying" && exit 1)
+          for dir in awssm gcpsm vault testing/integration; do
+            (cd "$dir" && go mod tidy)
+            git diff --exit-code "$dir/go.mod" "$dir/go.sum" || (echo "$dir/go.mod needs tidying" && exit 1)
+          done
+      - run: make test
+      - uses: golangci/golangci-lint-action@v7
+
+  tag-submodules:
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Tag submodules
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/}
+          for mod in awssm gcpsm vault; do
+            git tag "${mod}/${VERSION}"
+          done
+          git push origin --tags
+
+  release:
+    needs: tag-submodules
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.25'
+      - uses: goreleaser/goreleaser-action@v6
+        with:
+          version: latest
+          args: release --clean
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GORELEASER_CURRENT_TAG: ${{ github.ref_name }}
+
+  verify:
+    needs: release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.25'
+      - name: Get release tag
+        id: get_tag
+        run: echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+      - name: Verify module can be fetched
+        run: |
+          sleep 30
+          cd $(mktemp -d)
+          go mod init test
+          go get github.com/zoobzio/fig@${{ steps.get_tag.outputs.TAG }}
+      - name: Release summary
+        run: |
+          echo "### Release ${{ steps.get_tag.outputs.TAG }} Complete!" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Install:" >> $GITHUB_STEP_SUMMARY
+          echo '```bash' >> $GITHUB_STEP_SUMMARY
+          echo "# Core only" >> $GITHUB_STEP_SUMMARY
+          echo "go get github.com/zoobzio/fig@${{ steps.get_tag.outputs.TAG }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "# With a provider" >> $GITHUB_STEP_SUMMARY
+          echo "go get github.com/zoobzio/fig/vault@${{ steps.get_tag.outputs.TAG }}" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
