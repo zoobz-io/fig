@@ -1,0 +1,32 @@
+version: 2
+
+builds:
+  - skip: true
+
+release:
+  header: |
+    ## Installation
+
+    ```bash
+    go get github.com/zoobzio/fig@{{ .Tag }}
+    ```
+
+changelog:
+  sort: asc
+  groups:
+    - title: Features
+      regexp: "^feat"
+      order: 0
+    - title: Bug Fixes
+      regexp: "^fix"
+      order: 1
+    - title: Performance
+      regexp: "^perf"
+      order: 2
+    - title: Other
+      order: 999
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+      - "^chore:"
