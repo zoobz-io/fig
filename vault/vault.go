@@ -89,7 +89,7 @@ func defaultHTTPClient() (*http.Client, error) {
 		return http.DefaultClient, nil
 	}
 
-	caCertPEM, err := os.ReadFile(caCert)
+	caCertPEM, err := os.ReadFile(caCert) // #nosec G304 -- path from VAULT_CACERT env var
 	if err != nil {
 		return nil, fmt.Errorf("vault: failed to read CA cert: %w", err)
 	}
@@ -102,7 +102,8 @@ func defaultHTTPClient() (*http.Client, error) {
 	return &http.Client{
 		Transport: &http.Transport{
 			TLSClientConfig: &tls.Config{
-				RootCAs: certPool,
+				RootCAs:    certPool,
+				MinVersion: tls.VersionTLS12,
 			},
 		},
 	}, nil
