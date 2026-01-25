@@ -25,7 +25,11 @@ func convert(value string, target reflect.Type) (reflect.Value, error) {
 	// Check for TextUnmarshaler
 	if target.Implements(reflect.TypeOf((*encoding.TextUnmarshaler)(nil)).Elem()) {
 		v := reflect.New(target).Elem()
-		if err := v.Addr().Interface().(encoding.TextUnmarshaler).UnmarshalText([]byte(value)); err != nil {
+		unmarshaler, ok := v.Addr().Interface().(encoding.TextUnmarshaler)
+		if !ok {
+			return reflect.Value{}, ErrInvalidType
+		}
+		if err := unmarshaler.UnmarshalText([]byte(value)); err != nil {
 			return reflect.Value{}, err
 		}
 		return v, nil
@@ -35,7 +39,11 @@ func convert(value string, target reflect.Type) (reflect.Value, error) {
 	ptrType := reflect.PointerTo(target)
 	if ptrType.Implements(reflect.TypeOf((*encoding.TextUnmarshaler)(nil)).Elem()) {
 		v := reflect.New(target)
-		if err := v.Interface().(encoding.TextUnmarshaler).UnmarshalText([]byte(value)); err != nil {
+		unmarshaler, ok := v.Interface().(encoding.TextUnmarshaler)
+		if !ok {
+			return reflect.Value{}, ErrInvalidType
+		}
+		if err := unmarshaler.UnmarshalText([]byte(value)); err != nil {
 			return reflect.Value{}, err
 		}
 		return v.Elem(), nil
