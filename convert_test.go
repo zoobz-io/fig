@@ -37,6 +37,34 @@ func TestConvert_Int64(t *testing.T) {
 	}
 }
 
+func TestConvert_IntVariants(t *testing.T) {
+	tests := []struct {
+		name   string
+		input  string
+		target any
+		want   int64
+	}{
+		{"int8", "127", int8(0), 127},
+		{"int8 negative", "-128", int8(0), -128},
+		{"int16", "32767", int16(0), 32767},
+		{"int16 negative", "-32768", int16(0), -32768},
+		{"int32", "2147483647", int32(0), 2147483647},
+		{"int32 negative", "-2147483648", int32(0), -2147483648},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			v, err := convert(tt.input, reflect.TypeOf(tt.target))
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			if v.Int() != tt.want {
+				t.Errorf("got %d, want %d", v.Int(), tt.want)
+			}
+		})
+	}
+}
+
 func TestConvert_Bool(t *testing.T) {
 	tests := []struct {
 		input string
@@ -74,8 +102,12 @@ func TestConvert_Duration(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if v.Interface().(time.Duration) != 30*time.Second {
-		t.Errorf("got %v, want %v", v.Interface(), 30*time.Second)
+	got, ok := v.Interface().(time.Duration)
+	if !ok {
+		t.Fatal("type assertion failed")
+	}
+	if got != 30*time.Second {
+		t.Errorf("got %v, want %v", got, 30*time.Second)
 	}
 }
 
@@ -84,7 +116,10 @@ func TestConvert_StringSlice(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	got := v.Interface().([]string)
+	got, ok := v.Interface().([]string)
+	if !ok {
+		t.Fatal("type assertion failed")
+	}
 	want := []string{"a", "b", "c"}
 	if len(got) != len(want) {
 		t.Fatalf("got %v, want %v", got, want)
@@ -160,7 +195,10 @@ func TestConvert_TextUnmarshaler(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	got := v.Interface().(textUnmarshalerType)
+	got, ok := v.Interface().(textUnmarshalerType)
+	if !ok {
+		t.Fatal("type assertion failed")
+	}
 	if got.value != "unmarshaled:test" {
 		t.Errorf("got %q, want %q", got.value, "unmarshaled:test")
 	}

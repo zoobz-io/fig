@@ -19,8 +19,8 @@ var (
 
 // FieldError wraps an error with field context.
 type FieldError struct {
-	Field string
 	Err   error
+	Field string
 }
 
 func (e *FieldError) Error() string {
