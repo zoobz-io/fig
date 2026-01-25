@@ -25,10 +25,7 @@ func convert(value string, target reflect.Type) (reflect.Value, error) {
 	// Check for TextUnmarshaler
 	if target.Implements(reflect.TypeOf((*encoding.TextUnmarshaler)(nil)).Elem()) {
 		v := reflect.New(target).Elem()
-		unmarshaler, ok := v.Addr().Interface().(encoding.TextUnmarshaler)
-		if !ok {
-			return reflect.Value{}, ErrInvalidType
-		}
+		unmarshaler := v.Addr().Interface().(encoding.TextUnmarshaler) //nolint:errcheck // Implements guard ensures assertion succeeds
 		if err := unmarshaler.UnmarshalText([]byte(value)); err != nil {
 			return reflect.Value{}, err
 		}
@@ -39,10 +36,7 @@ func convert(value string, target reflect.Type) (reflect.Value, error) {
 	ptrType := reflect.PointerTo(target)
 	if ptrType.Implements(reflect.TypeOf((*encoding.TextUnmarshaler)(nil)).Elem()) {
 		v := reflect.New(target)
-		unmarshaler, ok := v.Interface().(encoding.TextUnmarshaler)
-		if !ok {
-			return reflect.Value{}, ErrInvalidType
-		}
+		unmarshaler := v.Interface().(encoding.TextUnmarshaler) //nolint:errcheck // Implements guard ensures assertion succeeds
 		if err := unmarshaler.UnmarshalText([]byte(value)); err != nil {
 			return reflect.Value{}, err
 		}

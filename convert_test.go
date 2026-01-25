@@ -180,14 +180,33 @@ func TestConvert_Pointer(t *testing.T) {
 	})
 }
 
-// textUnmarshalerType implements encoding.TextUnmarshaler for testing.
+// textUnmarshalerType implements encoding.TextUnmarshaler with pointer receiver.
 type textUnmarshalerType struct {
 	value string
 }
 
 func (t *textUnmarshalerType) UnmarshalText(text []byte) error {
+	if string(text) == "fail" {
+		return errors.New("unmarshal failed")
+	}
 	t.value = "unmarshaled:" + string(text)
 	return nil
+}
+
+// valueReceiverUnmarshaler implements encoding.TextUnmarshaler with value receiver.
+// This exercises the first TextUnmarshaler branch (lines 26-35).
+type valueReceiverUnmarshaler string
+
+func (v valueReceiverUnmarshaler) UnmarshalText(_ []byte) error {
+	return nil
+}
+
+// failingValueUnmarshaler implements encoding.TextUnmarshaler with value receiver
+// but returns an error.
+type failingValueUnmarshaler string
+
+func (f failingValueUnmarshaler) UnmarshalText(_ []byte) error {
+	return errors.New("value receiver unmarshal failed")
 }
 
 func TestConvert_TextUnmarshaler(t *testing.T) {
@@ -201,6 +220,33 @@ func TestConvert_TextUnmarshaler(t *testing.T) {
 	}
 	if got.value != "unmarshaled:test" {
 		t.Errorf("got %q, want %q", got.value, "unmarshaled:test")
+	}
+}
+
+func TestConvert_TextUnmarshaler_PointerReceiverError(t *testing.T) {
+	_, err := convert("fail", reflect.TypeOf(textUnmarshalerType{}))
+	if err == nil {
+		t.Fatal("expected error, got nil")
+	}
+	if err.Error() != "unmarshal failed" {
+		t.Errorf("got error %q, want %q", err.Error(), "unmarshal failed")
+	}
+}
+
+func TestConvert_TextUnmarshaler_ValueReceiver(t *testing.T) {
+	_, err := convert("test", reflect.TypeOf(valueReceiverUnmarshaler("")))
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+}
+
+func TestConvert_TextUnmarshaler_ValueReceiverError(t *testing.T) {
+	_, err := convert("test", reflect.TypeOf(failingValueUnmarshaler("")))
+	if err == nil {
+		t.Fatal("expected error, got nil")
+	}
+	if err.Error() != "value receiver unmarshal failed" {
+		t.Errorf("got error %q, want %q", err.Error(), "value receiver unmarshal failed")
 	}
 }
 
