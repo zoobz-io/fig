@@ -1,5 +1,14 @@
 # fig
 
+[![CI](https://github.com/zoobzio/fig/actions/workflows/ci.yml/badge.svg)](https://github.com/zoobzio/fig/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/zoobzio/fig/branch/main/graph/badge.svg)](https://codecov.io/gh/zoobzio/fig)
+[![Go Report Card](https://goreportcard.com/badge/github.com/zoobzio/fig)](https://goreportcard.com/report/github.com/zoobzio/fig)
+[![CodeQL](https://github.com/zoobzio/fig/actions/workflows/codeql.yml/badge.svg)](https://github.com/zoobzio/fig/actions/workflows/codeql.yml)
+[![Go Reference](https://pkg.go.dev/badge/github.com/zoobzio/fig.svg)](https://pkg.go.dev/github.com/zoobzio/fig)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Go Version](https://img.shields.io/github/go-mod/go-version/zoobzio/fig)](go.mod)
+[![Release](https://img.shields.io/github/v/release/zoobzio/fig)](https://github.com/zoobzio/fig/releases/latest)
+
 Struct tags in, configuration out.
 
 fig loads configuration from environment variables, secret providers, and defaults using Go struct tags. One function call, predictable resolution order.
@@ -86,7 +95,10 @@ go get github.com/zoobzio/fig/vault
 ```go
 import "github.com/zoobzio/fig/vault"
 
-p, _ := vault.New()
+p, err := vault.New()
+if err != nil {
+    log.Fatal(err)
+}
 fig.Load(&cfg, p)
 ```
 
@@ -107,9 +119,7 @@ func (c *Config) Validate() error {
 
 ## Why fig?
 
-- **One function** — `Load` does everything; no builder chains or option structs
-- **Predictable** — secret → env → default resolution, every time
-- **Minimal** — no external dependencies beyond [sentinel](https://github.com/zoobzio/sentinel)
+No config files. No YAML. No JSON. No builder chains. One function, one resolution order, done.
 
 ## Contributing
 
