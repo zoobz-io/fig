@@ -1,4 +1,4 @@
-module github.com/zoobzio/fig/awssm
+module github.com/zoobz-io/fig/awssm
 
 go 1.24.0
 
@@ -7,7 +7,7 @@ toolchain go1.25.3
 require (
 	github.com/aws/aws-sdk-go-v2/config v1.32.7
 	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.41.1
-	github.com/zoobzio/fig v0.0.0
+	github.com/zoobz-io/fig v0.0.0
 )
 
 require (
@@ -24,7 +24,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.35.13 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sts v1.41.6 // indirect
 	github.com/aws/smithy-go v1.24.0 // indirect
-	github.com/zoobzio/sentinel v1.0.2 // indirect
+	github.com/zoobz-io/sentinel v1.0.4 // indirect
 )
 
-replace github.com/zoobzio/fig => ../
+replace github.com/zoobz-io/fig => ../

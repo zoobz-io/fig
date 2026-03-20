@@ -3,30 +3,37 @@ version: 2
 builds:
   - skip: true
 
-release:
-  header: |
-    ## Installation
-
-    ```bash
-    go get github.com/zoobzio/fig@{{ .Tag }}
-    ```
-
 changelog:
   sort: asc
   groups:
     - title: Features
-      regexp: "^feat"
+      regexp: '^.*?feat(\([[:word:]]+\))??!?:.+$'
       order: 0
     - title: Bug Fixes
-      regexp: "^fix"
+      regexp: '^.*?fix(\([[:word:]]+\))??!?:.+$'
       order: 1
-    - title: Performance
-      regexp: "^perf"
+    - title: Documentation
+      regexp: '^.*?docs(\([[:word:]]+\))??!?:.+$'
       order: 2
-    - title: Other
+    - title: Others
       order: 999
   filters:
     exclude:
       - "^docs:"
       - "^test:"
       - "^chore:"
+      - "^ci:"
+
+release:
+  github:
+    owner: zoobz-io
+    name: fig
+  draft: false
+  prerelease: auto
+  header: |
+    ## What's Changed
+  footer: |
+    ## Installation
+    ```bash
+    go get github.com/zoobz-io/fig@{{ .Tag }}
+    ```

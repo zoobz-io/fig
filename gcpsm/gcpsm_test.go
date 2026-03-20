@@ -8,7 +8,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/zoobzio/fig"
+	"github.com/zoobz-io/fig"
 )
 
 func mockServer(secrets map[string]string) *httptest.Server {

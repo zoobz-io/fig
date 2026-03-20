@@ -1,13 +1,13 @@
 # fig
 
-[![CI](https://github.com/zoobzio/fig/actions/workflows/ci.yml/badge.svg)](https://github.com/zoobzio/fig/actions/workflows/ci.yml)
-[![codecov](https://codecov.io/gh/zoobzio/fig/branch/main/graph/badge.svg)](https://codecov.io/gh/zoobzio/fig)
-[![Go Report Card](https://goreportcard.com/badge/github.com/zoobzio/fig)](https://goreportcard.com/report/github.com/zoobzio/fig)
-[![CodeQL](https://github.com/zoobzio/fig/actions/workflows/codeql.yml/badge.svg)](https://github.com/zoobzio/fig/actions/workflows/codeql.yml)
-[![Go Reference](https://pkg.go.dev/badge/github.com/zoobzio/fig.svg)](https://pkg.go.dev/github.com/zoobzio/fig)
+[![CI](https://github.com/zoobz-io/fig/actions/workflows/ci.yml/badge.svg)](https://github.com/zoobz-io/fig/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/zoobz-io/fig/branch/main/graph/badge.svg)](https://codecov.io/gh/zoobz-io/fig)
+[![Go Report Card](https://goreportcard.com/badge/github.com/zoobz-io/fig)](https://goreportcard.com/report/github.com/zoobz-io/fig)
+[![CodeQL](https://github.com/zoobz-io/fig/actions/workflows/codeql.yml/badge.svg)](https://github.com/zoobz-io/fig/actions/workflows/codeql.yml)
+[![Go Reference](https://pkg.go.dev/badge/github.com/zoobz-io/fig.svg)](https://pkg.go.dev/github.com/zoobz-io/fig)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Go Version](https://img.shields.io/github/go-mod/go-version/zoobzio/fig)](go.mod)
-[![Release](https://img.shields.io/github/v/release/zoobzio/fig)](https://github.com/zoobzio/fig/releases/latest)
+[![Go Version](https://img.shields.io/github/go-mod/go-version/zoobz-io/fig)](go.mod)
+[![Release](https://img.shields.io/github/v/release/zoobz-io/fig)](https://github.com/zoobz-io/fig/releases/latest)
 
 Struct tags in, configuration out.
 
@@ -16,7 +16,7 @@ fig loads configuration from environment variables, secret providers, and defaul
 ## Install
 
 ```bash
-go get github.com/zoobzio/fig
+go get github.com/zoobz-io/fig
 ```
 
 Requires Go 1.24+.
@@ -29,7 +29,7 @@ package main
 import (
     "log"
 
-    "github.com/zoobzio/fig"
+    "github.com/zoobz-io/fig"
 )
 
 type Config struct {
@@ -83,17 +83,17 @@ Each provider is a separate module — import only what you need:
 
 ```bash
 # AWS Secrets Manager
-go get github.com/zoobzio/fig/awssm
+go get github.com/zoobz-io/fig/awssm
 
 # GCP Secret Manager
-go get github.com/zoobzio/fig/gcpsm
+go get github.com/zoobz-io/fig/gcpsm
 
 # HashiCorp Vault
-go get github.com/zoobzio/fig/vault
+go get github.com/zoobz-io/fig/vault
 ```
 
 ```go
-import "github.com/zoobzio/fig/vault"
+import "github.com/zoobz-io/fig/vault"
 
 p, err := vault.New()
 if err != nil {

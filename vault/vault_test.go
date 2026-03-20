@@ -7,7 +7,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/zoobzio/fig"
+	"github.com/zoobz-io/fig"
 )
 
 func mockVaultServer(secrets map[string]map[string]any) *httptest.Server {

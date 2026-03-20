@@ -6,7 +6,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/zoobzio/fig"
+	"github.com/zoobz-io/fig"
 )
 
 func TestMockProvider_Get(t *testing.T) {

@@ -11,7 +11,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/zoobzio/fig"
+	"github.com/zoobz-io/fig"
 )
 
 // Provider retrieves secrets from HashiCorp Vault.

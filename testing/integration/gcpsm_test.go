@@ -7,8 +7,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/zoobzio/fig"
-	"github.com/zoobzio/fig/gcpsm"
+	"github.com/zoobz-io/fig"
+	"github.com/zoobz-io/fig/gcpsm"
 )
 
 const (

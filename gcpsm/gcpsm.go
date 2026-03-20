@@ -9,7 +9,7 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/zoobzio/fig"
+	"github.com/zoobz-io/fig"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 )
