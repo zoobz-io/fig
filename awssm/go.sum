@@ -28,5 +28,5 @@ github.com/aws/aws-sdk-go-v2/service/sts v1.41.6 h1:5fFjR/ToSOzB2OQ/XqWpZBmNvmP/
 github.com/aws/aws-sdk-go-v2/service/sts v1.41.6/go.mod h1:qgFDZQSD/Kys7nJnVqYlWKnh0SSdMjAi0uSwON4wgYQ=
 github.com/aws/smithy-go v1.24.0 h1:LpilSUItNPFr1eY85RYgTIg5eIEPtvFbskaFcmmIUnk=
 github.com/aws/smithy-go v1.24.0/go.mod h1:LEj2LM3rBRQJxPZTB4KuzZkaZYnZPnvgIhb4pu07mx0=
-github.com/zoobzio/sentinel v1.0.2 h1:hTs5Ke2Vi0VgOkoHSJF9G3BYnxTQjMbvOH+qbbQLaoY=
-github.com/zoobzio/sentinel v1.0.2/go.mod h1:gtsD0AYlTEI8ajpEQ3azb7BDZicdsESOB1dJpQqgDKc=
+github.com/zoobz-io/sentinel v1.0.4 h1:nGn4zzwwjmd30tJ2nf75xgvkw47lrD+0dDYFMCg1s1k=
+github.com/zoobz-io/sentinel v1.0.4/go.mod h1:/Bao7Ro0XVh5oxDZBjpFaNuKosXY3wT5ccjtDnC4lRs=

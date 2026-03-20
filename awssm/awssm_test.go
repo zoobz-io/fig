@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
-	"github.com/zoobzio/fig"
+	"github.com/zoobz-io/fig"
 )
 
 // mockSMClient implements smClient for testing.

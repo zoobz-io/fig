@@ -1,6 +1,6 @@
 cloud.google.com/go/compute/metadata v0.3.0 h1:Tz+eQXMEqDIKRsmY3cHTL6FVaynIjX2QxYC4trgAKZc=
 cloud.google.com/go/compute/metadata v0.3.0/go.mod h1:zFmK7XCadkQkj6TtorcaGlCW1hT1fIilQDwofLpJ20k=
-github.com/zoobzio/sentinel v1.0.2 h1:hTs5Ke2Vi0VgOkoHSJF9G3BYnxTQjMbvOH+qbbQLaoY=
-github.com/zoobzio/sentinel v1.0.2/go.mod h1:gtsD0AYlTEI8ajpEQ3azb7BDZicdsESOB1dJpQqgDKc=
+github.com/zoobz-io/sentinel v1.0.4 h1:nGn4zzwwjmd30tJ2nf75xgvkw47lrD+0dDYFMCg1s1k=
+github.com/zoobz-io/sentinel v1.0.4/go.mod h1:/Bao7Ro0XVh5oxDZBjpFaNuKosXY3wT5ccjtDnC4lRs=
 golang.org/x/oauth2 v0.30.0 h1:dnDm7JmhM45NNpd8FDDeLhK6FwqbOf4MLCM9zb1BOHI=
 golang.org/x/oauth2 v0.30.0/go.mod h1:B++QgG3ZKulg6sRPGD/mqlHQs5rB3Ml9erfeDY7xKlU=

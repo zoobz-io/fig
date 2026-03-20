@@ -6,7 +6,7 @@ import (
 	"os"
 	"reflect"
 
-	"github.com/zoobzio/sentinel"
+	"github.com/zoobz-io/sentinel"
 )
 
 // fieldTags holds parsed struct tags for a field.

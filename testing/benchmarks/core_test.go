@@ -7,8 +7,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/zoobzio/fig"
-	figtesting "github.com/zoobzio/fig/testing"
+	"github.com/zoobz-io/fig"
+	figtesting "github.com/zoobz-io/fig/testing"
 )
 
 // Small config with 3 fields

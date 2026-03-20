@@ -10,8 +10,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials"
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
-	"github.com/zoobzio/fig"
-	"github.com/zoobzio/fig/awssm"
+	"github.com/zoobz-io/fig"
+	"github.com/zoobz-io/fig/awssm"
 )
 
 const (

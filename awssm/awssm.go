@@ -7,7 +7,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
-	"github.com/zoobzio/fig"
+	"github.com/zoobz-io/fig"
 )
 
 // smClient defines the Secrets Manager operations used by Provider.

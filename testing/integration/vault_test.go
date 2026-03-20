@@ -7,8 +7,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/zoobzio/fig"
-	"github.com/zoobzio/fig/vault"
+	"github.com/zoobz-io/fig"
+	"github.com/zoobz-io/fig/vault"
 )
 
 func TestVault_Get(t *testing.T) {

@@ -8,24 +8,29 @@
 # Test files
 *.test
 *.out
-coverage.out
-coverage-*.out
-coverage.html
-coverage.txt
+coverage.*
 
 # Workspace
 go.work.sum
 
-# IDE
+# IDE files
 .idea/
 .vscode/
 *.swp
 *.swo
+*~
 
-# OS
+# OS files
 .DS_Store
 Thumbs.db
 
-# Build
+# Build artifacts
 dist/
 vendor/
+
+# Profiling
+*.prof
+*.pprof
+
+# Claude
+.claude/

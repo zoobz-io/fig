@@ -7,7 +7,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/zoobzio/fig"
+	"github.com/zoobz-io/fig"
 )
 
 // MockProvider is a test implementation of fig.SecretProvider.

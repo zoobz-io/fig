@@ -47,7 +47,7 @@ import (
 	"context"
 	"reflect"
 
-	"github.com/zoobzio/sentinel"
+	"github.com/zoobz-io/sentinel"
 )
 
 func init() {
